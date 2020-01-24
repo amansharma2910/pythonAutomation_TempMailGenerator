@@ -1,3 +1,5 @@
+# The OS module allows us to perform operating system dependant functionalities.
+import os
 # The webbrowser module allows us to perform browser operations such as opening a website, which is what we are going to do using this script.
 import webbrowser
 # The date method of datetime module allows us to get the date on which the tempmail was generated.
@@ -6,7 +8,7 @@ from datetime import date as dt
 class TempmailGen:
 
 # This is the initializer method for the class.
-    def __init__(self, website = "", tempmail = "", password = "", date = ""):
+    def __init__(self, website = "", tempmail = "asada", password = "adadadafgf", date = ""):
         self.website = website
         self.tempmail = tempmail
         self.password = password
@@ -40,6 +42,11 @@ class TempmailGen:
         chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
         webbrowser.get(chrome_path).open_new(url)
 
+# The following code block will add the generated tempmail, password and website name to the "passwords.txt" file.
+    def passwordManager(self):
+        with open("passwords.txt", mode = "a", encoding = "utf-8") as my_file:
+            my_file.write("\n\nDATE: {}\nWEBSITE: {}\nTEMPMAIL: {}\nPASSWORD: {}".format(self.date, self.website, self.tempmail, self.password))
+
     def __str__(self):
         return "{}".format(self.date)
 
@@ -47,4 +54,5 @@ class TempmailGen:
 
 test = TempmailGen()
 test.tempmailOpener()
+test.passwordManager()
 print(test)
