@@ -4,11 +4,13 @@ import os
 import webbrowser
 # The date method of datetime module allows us to get the date on which the tempmail was generated.
 from datetime import date as dt
+# The string and random modules will help us generate a password.
+import random
 
 class TempmailGen:
 
 # This is the initializer method for the class.
-    def __init__(self, website = "", tempmail = "asada", password = "adadadafgf", date = ""):
+    def __init__(self, website = "", tempmail = "asada1920@gmail.com", password = "adadadafgf", date = ""):
         self.website = website
         self.tempmail = tempmail
         self.password = password
@@ -47,12 +49,20 @@ class TempmailGen:
         with open("passwords.txt", mode = "a", encoding = "utf-8") as my_file:
             my_file.write("\n\nDATE: {}\nWEBSITE: {}\nTEMPMAIL: {}\nPASSWORD: {}".format(self.date, self.website, self.tempmail, self.password))
 
+    def passwordGenerator(self):
+        key = self.tempmail
+        self.password = "".join(random.choice(key) for i in range(9)) + "@"
+
+
     def __str__(self):
         return "{}".format(self.date)
 
 
+def main():
+    test = TempmailGen()
+    test.tempmailOpener()
+    test.passwordGenerator()
+    test.passwordManager()
+    print(test)
 
-test = TempmailGen()
-test.tempmailOpener()
-test.passwordManager()
-print(test)
+main()
