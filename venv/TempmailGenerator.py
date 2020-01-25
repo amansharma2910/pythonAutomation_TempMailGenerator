@@ -4,13 +4,16 @@ import os
 import webbrowser
 # The date method of datetime module allows us to get the date on which the tempmail was generated.
 from datetime import date as dt
+# The BeautifulSoup module helps with data-scraping while the requests module allows us to load the website for html parsing.
+from bs4 import BeautifulSoup as Bs
+import requests
 # The string and random modules will help us generate a password.
 import random
 
 class TempmailGen:
 
 # This is the initializer method for the class.
-    def __init__(self, website = "", tempmail = "asada1920@gmail.com", password = "adadadafgf", date = ""):
+    def __init__(self, website = "", tempmail = "", password = "", date = ""):
         self.website = website
         self.tempmail = tempmail
         self.password = password
@@ -40,13 +43,22 @@ class TempmailGen:
     
 # The following code block will open the tempmail website for you.
     def tempmailOpener(self):
-        url = 'https://temp-mail.org/en/'
+        url = "https://tempmail.net/"
         chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
         webbrowser.get(chrome_path).open_new(url)
 
+# The following code block will web-scrape the tempmail for us.
+    def tempmailGenerator(self):
+        r = requests.get("https://tempmail.net/")
+        soup = Bs(r.content, "html.parser")
+        a = soup.find_all("input", id="eposta_adres")
+        for i in a:
+            b = str(i)
+        self.tempmail = b[76:96]
+
 # The following code block will add the generated tempmail, password and website name to the "passwords.txt" file.
     def passwordManager(self):
-        with open("passwords.txt", mode = "a", encoding = "utf-8") as my_file:
+        with open("StoredPasswords.txt", mode = "a", encoding = "utf-8") as my_file:
             my_file.write("\n\nDATE: {}\nWEBSITE: {}\nTEMPMAIL: {}\nPASSWORD: {}".format(self.date, self.website, self.tempmail, self.password))
 
     def passwordGenerator(self):
@@ -61,8 +73,8 @@ class TempmailGen:
 def main():
     test = TempmailGen()
     test.tempmailOpener()
+    test.tempmailGenerator()
     test.passwordGenerator()
     test.passwordManager()
-    print(test)
 
 main()
